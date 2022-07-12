@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package api.learnProto.bri.v1.health;
+
+option go_package = "gitlab.com/learnProto/proto/v1/health";
+
+//import "lib/google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+// RetrieveResponse is the response for health service.
+message Response {
+    bool success               = 1;
+    string code                = 2;
+    string desc                = 3;
+}
+
+message ResPatient {
+    string id               = 1;
+    string name                = 2;
+}
+
+message ResAllPatients {
+    repeated ResPatient allPatient  =1;
+}
+
+message ReqPatient {
+    string id   = 1;
+    string name = 2;
+}
+
+// healthServices provides utility methods for the API.
+service HealthService {
+    rpc Get(google.protobuf.Empty) returns (Response) {
+    }
+
+    rpc GetPatient(google.protobuf.Empty) returns (ResPatient){
+    }
+
+    rpc CreatePatient(ReqPatient) returns (ResPatient){
+    }
+
+    rpc GetAllPatients (google.protobuf.Empty) returns (ResAllPatients){
+    };
+}
