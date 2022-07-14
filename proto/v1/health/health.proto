@@ -4,7 +4,7 @@ package api.learnProto.bri.v1.health;
 
 option go_package = "gitlab.com/learnProto/proto/v1/health";
 
-//import "lib/google/api/annotations.proto";
+import "lib/google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
 // RetrieveResponse is the response for health service.
@@ -12,6 +12,7 @@ message Response {
     bool success               = 1;
     string code                = 2;
     string desc                = 3;
+    repeated Data data         = 4;
 }
 
 message ResPatient {
@@ -28,17 +29,58 @@ message ReqPatient {
     string name = 2;
 }
 
+message Data {
+    string userId = 1;
+    string pass = 2;
+    bool delFlag = 3;
+    string description = 4;
+    string creId = 5;
+    string creTime = 6;
+    string modId = 7;
+    string modTime = 8;
+    int32 modTs = 9;
+}
+
+message Id {
+    string userId = 1;
+}
+
 // healthServices provides utility methods for the API.
 service HealthService {
+    rpc GetData(google.protobuf.Empty) returns (Response) {
+        option (google.api.http) = {
+            get  : "/api/learnProto"
+        };
+    }
+
+    rpc GetById (Id) returns (Response){
+        option (google.api.http) = {
+            get : "/api/learnProto/{userId}"
+        };
+    };
+
     rpc Get(google.protobuf.Empty) returns (Response) {
+        option (google.api.http) = {
+            get : "/api/learnProto/health"
+        };
     }
 
     rpc GetPatient(google.protobuf.Empty) returns (ResPatient){
+        option (google.api.http) = {
+            get : "/api/learnProto/health/patient"
+        };
     }
 
     rpc CreatePatient(ReqPatient) returns (ResPatient){
+        option (google.api.http) = {
+            post : "/api/learnProto/health/patient"
+            body : "*"
+        };
     }
 
     rpc GetAllPatients (google.protobuf.Empty) returns (ResAllPatients){
+        option (google.api.http) = {
+            get : "/api/learnProto/health/patients"
+        };
     };
 }

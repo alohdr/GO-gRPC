@@ -1,0 +1,357 @@
+{
+  "swagger": "2.0",
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/learnProto": {
+      "get": {
+        "operationId": "HealthService_GetData",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/healthResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        }
+      }
+    },
+    "/api/learnProto/health": {
+      "get": {
+        "operationId": "HealthService_Get",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/healthResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        }
+      }
+    },
+    "/api/learnProto/health/patient": {
+      "get": {
+        "operationId": "HealthService_GetPatient",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/healthResPatient"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "HealthService_CreatePatient",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/healthResPatient"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/healthReqPatient"
+            }
+          }
+        ]
+      }
+    },
+    "/api/learnProto/health/patients": {
+      "get": {
+        "operationId": "HealthService_GetAllPatients",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/healthResAllPatients"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        }
+      }
+    },
+    "/api/learnProto/{userId}": {
+      "get": {
+        "operationId": "HealthService_GetById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/healthResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
+    "/api/learnProto/luas/lingkaran": {
+      "post": {
+        "operationId": "LuasService_CalculateCircle",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/luasResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/luasCircle"
+            }
+          }
+        ]
+      }
+    },
+    "/api/learnProto/luas/trapesium": {
+      "post": {
+        "operationId": "LuasService_CalculateTrapesium",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/luasResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/luasTrapesium"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "healthData": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "pass": {
+          "type": "string"
+        },
+        "delFlag": {
+          "type": "boolean"
+        },
+        "description": {
+          "type": "string"
+        },
+        "creId": {
+          "type": "string"
+        },
+        "creTime": {
+          "type": "string"
+        },
+        "modId": {
+          "type": "string"
+        },
+        "modTime": {
+          "type": "string"
+        },
+        "modTs": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "healthReqPatient": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "healthResAllPatients": {
+      "type": "object",
+      "properties": {
+        "allPatient": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/healthResPatient"
+          }
+        }
+      }
+    },
+    "healthResPatient": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "healthResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "code": {
+          "type": "string"
+        },
+        "desc": {
+          "type": "string"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/healthData"
+          }
+        }
+      },
+      "description": "RetrieveResponse is the response for health service."
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "runtimeError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "luasCircle": {
+      "type": "object",
+      "properties": {
+        "jari": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "luasResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "string",
+          "format": "int64"
+        }
+      },
+      "description": "RetrieveResponse is the response for luas service."
+    },
+    "luasTrapesium": {
+      "type": "object",
+      "properties": {
+        "base1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "base2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "height": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    }
+  }
+}

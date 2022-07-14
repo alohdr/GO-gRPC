@@ -2,9 +2,11 @@ package health
 
 import (
 	"context"
+	"errors"
 
 	"github.com/golang/protobuf/ptypes/empty"
 	"github.com/google/uuid"
+	"gitlab.com/learnProto/pkg/v1/postgres"
 	"gitlab.com/learnProto/pkg/v1/utils/constants"
 	hlpb "gitlab.com/learnProto/proto/v1/health"
 )
@@ -60,4 +62,87 @@ func (s *Server) GetAllPatients(ctx context.Context, req *empty.Empty) (*hlpb.Re
 
 	return &resp, nil
 
+}
+
+func (s *Server) GetData(ctx context.Context, req *empty.Empty) (*hlpb.Response, error) {
+	rows, err := s.configs.Pg.CustomMainSelect(&postgres.CustomMain{
+		UserId:  "081364475006",
+		DelFlag: false,
+	})
+
+	if err != nil {
+		s.logger.Errorf("[HEALTH][GET] ERROR %v", err)
+		return nil, err
+	}
+
+	if len(rows) == 0 {
+		s.logger.Errorf("[HEALTH][GET] ERROR no data found")
+		return nil, errors.New("no data found")
+	}
+
+	var data []*hlpb.Data
+
+	for _, row := range rows {
+		data = append(data, &hlpb.Data{
+			UserId:      row.UserId,
+			Pass:        row.Pass,
+			DelFlag:     row.DelFlag,
+			Description: row.Description.String,
+			CreId:       row.CreId,
+			CreTime:     row.CreTime.String(),
+			ModId:       row.ModId,
+			ModTime:     row.ModTime.String(),
+			ModTs:       int32(row.ModTs),
+		})
+	}
+
+	s.logger.Infof("[HEALTH][GET] SUCCESS")
+
+	return &hlpb.Response{
+		Success: true,
+		Code:    constants.SuccessCode,
+		Desc:    constants.SuccesDesc,
+		Data:    data,
+	}, nil
+}
+
+func (s *Server) GetById(ctx context.Context, req *hlpb.Id) (*hlpb.Response, error) {
+	rows, err := s.configs.Pg.CustomMainSelect(&postgres.CustomMain{
+		UserId: req.GetUserId(),
+	})
+
+	if err != nil {
+		s.logger.Errorf("[HEALTH][GET] ERROR %v", err)
+		return nil, err
+	}
+
+	if len(rows) == 0 {
+		s.logger.Errorf("[HEALTH][GET] ERROR no data found")
+		return nil, errors.New("no data found")
+	}
+
+	var data []*hlpb.Data
+
+	for _, row := range rows {
+		data = append(data, &hlpb.Data{
+			UserId:      row.UserId,
+			Pass:        row.Pass,
+			DelFlag:     row.DelFlag,
+			Description: row.Description.String,
+			CreId:       row.CreId,
+			CreTime:     row.CreTime.String(),
+			ModId:       row.ModId,
+			ModTime:     row.ModTime.String(),
+			ModTs:       int32(row.ModTs),
+		})
+	}
+
+	s.logger.Infof("[HEALTH][GET] SUCCESS")
+
+	return &hlpb.Response{
+		Success: true,
+		Code:    constants.SuccessCode,
+		Desc:    constants.SuccesDesc,
+		Data:    data,
+	}, nil
 }

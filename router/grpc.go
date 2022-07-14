@@ -8,8 +8,10 @@ import (
 	"github.com/sirupsen/logrus"
 
 	"gitlab.com/learnProto/api/v1/health"
+	"gitlab.com/learnProto/api/v1/luas"
 	"gitlab.com/learnProto/configs"
 	hlpb "gitlab.com/learnProto/proto/v1/health"
+	lspb "gitlab.com/learnProto/proto/v1/luas"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
@@ -25,6 +27,7 @@ func NewGRPCServer(configs *configs.Configs, logger *logrus.Logger) error {
 	grpcServer := grpc.NewServer()
 
 	hlpb.RegisterHealthServiceServer(grpcServer, health.New(configs, logger))
+	lspb.RegisterLuasServiceServer(grpcServer, luas.New(configs, logger))
 
 	// add reflection service
 	reflection.Register(grpcServer)

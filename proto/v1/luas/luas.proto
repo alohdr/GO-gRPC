@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package api.learnProto.bri.v1.luas;
+
+option go_package = "gitlab.com/learnProto/proto/v1/luas";
+
+import "lib/google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+// RetrieveResponse is the response for luas service.
+message Response {
+    int64 result               = 1;
+}
+
+message Circle {
+    int64 jari                 = 1;
+}
+
+message Trapesium {
+    int64 base1 =1;
+    int64 base2 =2;
+    int64 height =3;
+}
+
+// luasServices provides utility methods for the API.
+service LuasService {
+
+    rpc CalculateCircle(Circle) returns (Response){
+        option (google.api.http) = {
+            post : "/api/learnProto/luas/lingkaran"
+            body : "*"
+        };
+    }
+
+    rpc CalculateTrapesium (Trapesium) returns (Response){
+        option (google.api.http) = {
+            post : "/api/learnProto/luas/trapesium"
+            body : "*"
+        };
+    };
+}
