@@ -16,4 +16,5 @@ const (
 
 const (
 	Table_Custom_Main = `custom.main`
+	Field_User_Id     = `user_id`
 )

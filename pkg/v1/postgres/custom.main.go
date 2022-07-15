@@ -23,6 +23,15 @@ type CustomMain struct {
 	ModTs       int            `db:"mod_ts,omitempty"`
 }
 
+type Registrasi struct {
+	UserId string `db:"user_id"`
+	Pass   string `db:"pass"`
+}
+
+type Id struct {
+	UserId string `db: "pass"`
+}
+
 func (c *Conn) CustomMainSelect(filter *CustomMain) ([]*CustomMain, error) {
 	// create query syntax
 	qsyntax := fmt.Sprintf(`SELECT * FROM %s WHERE`, constants.Table_Custom_Main)
@@ -70,4 +79,52 @@ func (c *Conn) CustomMainSelect(filter *CustomMain) ([]*CustomMain, error) {
 	}
 
 	return rowsScanArr, nil
+}
+
+func (c *Conn) CustomMainRegister(input *Registrasi) (*CustomMain, error) {
+	// create query syntax
+	qsyntax := fmt.Sprintf(`INSERT  INTO %s (user_id, pass) VALUES($1, $2)`, constants.Table_Custom_Main)
+
+	qsyntax = fmt.Sprintf(`%s;`, qsyntax)
+
+	// create query syntax
+	db, err := sql.Open(POSTGRES, c.Conn)
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := db.Query(qsyntax, input.UserId, input.Pass)
+	defer db.Close()
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	return &CustomMain{
+		UserId: input.UserId,
+		Pass:   input.Pass,
+	}, nil
+}
+
+func (c *Conn) CustomMainDeleteRegister(id *Id) (*Id, error) {
+	qsyntax := fmt.Sprintf(`DELETE  FROM %s WHERE %s = $1`, constants.Table_Custom_Main, constants.Field_User_Id)
+
+	// create query syntax
+	db, err := sql.Open(POSTGRES, c.Conn)
+	if err != nil {
+		return nil, err
+	}
+
+	rows, err := db.Query(qsyntax, id.UserId)
+	defer db.Close()
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	return &Id{
+		UserId: id.UserId,
+	}, nil
 }

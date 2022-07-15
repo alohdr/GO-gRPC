@@ -41,6 +41,11 @@ message Data {
     int32 modTs = 9;
 }
 
+message Registrasi {
+    string userId  = 1;
+    string pass = 2;
+}
+
 message Id {
     string userId = 1;
 }
@@ -57,7 +62,20 @@ service HealthService {
         option (google.api.http) = {
             get : "/api/learnProto/{userId}"
         };
-    };
+    }
+
+    rpc Register(Registrasi) returns (Data){
+        option (google.api.http) = {
+            post : "/api/learnProto/registrasi"
+            body : "*"
+        };
+    }
+
+    rpc DeleteRegister(Id) returns (Id){
+        option (google.api.http) = {
+            delete : "/api/learnProto/deleteRegister/{userId}"
+        };
+    }
 
     rpc Get(google.protobuf.Empty) returns (Response) {
         option (google.api.http) = {

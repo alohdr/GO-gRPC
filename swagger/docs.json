@@ -26,6 +26,33 @@
         }
       }
     },
+    "/api/learnProto/deleteRegister/{userId}": {
+      "delete": {
+        "operationId": "HealthService_DeleteRegister",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/healthId"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ]
+      }
+    },
     "/api/learnProto/health": {
       "get": {
         "operationId": "HealthService_Get",
@@ -108,6 +135,35 @@
             }
           }
         }
+      }
+    },
+    "/api/learnProto/registrasi": {
+      "post": {
+        "operationId": "HealthService_Register",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/healthData"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/healthRegistrasi"
+            }
+          }
+        ]
       }
     },
     "/api/learnProto/{userId}": {
@@ -227,6 +283,25 @@
         "modTs": {
           "type": "integer",
           "format": "int32"
+        }
+      }
+    },
+    "healthId": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string"
+        }
+      }
+    },
+    "healthRegistrasi": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string"
+        },
+        "pass": {
+          "type": "string"
         }
       }
     },
